@@ -1,5 +1,16 @@
-#include "push_swap.h"
-#include "libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   instr.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olobresh <olobresh@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/25 18:46:11 by olobresh          #+#    #+#             */
+/*   Updated: 2024/01/25 18:46:17 by olobresh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../push_swap.h"
 
 void swap(t_list **stack)
 {
@@ -29,7 +40,8 @@ void push(t_list  **src, t_list  **dest)
 
 void rotate(t_list  **stack)
 {
-    t_list  *first, *last;
+    t_list	 *first;
+    t_list	*last;
 
     if (!stack || !(*stack) || !((*stack)->next))
 		  return;
@@ -44,7 +56,8 @@ void rotate(t_list  **stack)
 
 void reverse_rotate(t_list  **stack)
 {
-    t_list  *prev, *last;
+    t_list  *prev;
+    t_list  *last;
 
     if (!stack || !(*stack) || !((*stack)->next))
 		return;
@@ -52,9 +65,9 @@ void reverse_rotate(t_list  **stack)
     last = *stack;
     while (last->next)
 	  {
-        prev = last;
-        last = last->next;
-    }
+       		 prev = last;
+        	last = last->next;
+   	 }
     prev->next = NULL;
     last->next = *stack;
     *stack = last;

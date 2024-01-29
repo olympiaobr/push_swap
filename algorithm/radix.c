@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   radix.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: olobresh <olobresh@student.42berlin.d      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/25 18:53:29 by olobresh          #+#    #+#             */
+/*   Updated: 2024/01/25 18:53:30 by olobresh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../push_swap.h"
 
-void improved_radix_sort(t_list  **stack_a, t_list  **stack_b)
+void lsd_rad(t_list  **stack_a, t_list  **stack_b)
 {
     int max_bits;
     int bit;
@@ -19,7 +31,7 @@ void execute_bitwise_sorting(t_list  **stack_a, t_list  **stack_b, int bit)
     int i;
     int size;
 
-    size = calculate_size(*stack_a);
+    size = list_len(*stack_a);
     i = 0;
     while (i < size)
     {
@@ -31,7 +43,7 @@ void execute_bitwise_sorting(t_list  **stack_a, t_list  **stack_b, int bit)
 		//else ra(stack_a);//
         i++;
     }
-    while (calculate_size(*stack_b) > 0)
+    while (list_len(*stack_b) > 0)
         pa(stack_b, stack_a);
 }
 

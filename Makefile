@@ -1,24 +1,39 @@
-NAME	= push_swap
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: olobresh <olobresh@student.42berlin.d      +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/01/25 18:50:30 by olobresh          #+#    #+#              #
+#    Updated: 2024/01/25 18:50:33 by olobresh         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-HEADERS = push_swap.h libft/libft.h
+NAME	= push_swap
 
 LIBFT = libft/
 
 INCLUDE = -L ./libft -lft
 
-SRCS	= ./srcs/
-	  ./srcs/
-	  ./srcs/
-	  ./srcs/
-	  ./srcs/
-	  ./srcs/
-	  ./srcs/
+SRCS	= ./check_args.c \
+	  ./indexing.c \
+	  ./list_utils1.c \
+	  ./list_utils2.c \
+	  ./push_swap.c \
+	  ./algorithm/radix.c \
+	  ./algorithm/sort235.c \
+	  ./instructions/instr.c \
+	  ./instructions/instr_p.c \
+	  ./instructions/instr_r.c \
+	  ./instructions/instr_rr.c \
+	  ./instructions/instr_s.c
 
 OBJS = $(SRCS:.c=.o)
 
 CC	= cc
 
-CFLAGS	= -Wall -Wextra -Werror -I $(HEAD)
+CFLAGS	= -Wall -Wextra -Werror
 
 RM	= rm -f
 
@@ -28,7 +43,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	make -C $(LIBFT)
-	$(CC) $(CFLAGS) -g $(OBJS) -o $(NAME) $(INCLUDE)
+	$(CC) $(CFLAGS) -g $(OBJS) $(INCLUDE) -o $(NAME)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
