@@ -30,13 +30,9 @@ void push_swap(t_list **stack_a, t_list **stack_b)
     int size;
 
     size = list_len(*stack_a);
-    if (size <= 3)
+    if (size <= 5)
     {
-        combined_sort_small(stack_a, stack_b);
-    }
-    else if (size <= 5)
-    {
-        custom_push_and_sort(stack_a, stack_b);
+        small_stack_sort(stack_a, stack_b);
     }
     else
     {

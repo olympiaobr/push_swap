@@ -55,12 +55,11 @@ t_list *find_next_smallest(t_list  **stack);
 void		assign_indexes(t_list  **stack);
 
 //Algorithms
-void	combined_sort_small(t_list  **stack_a, t_list  **stack_b);
-void	detailed_sort_three(t_list  **stack_a, t_list  **stack_b);
-void	custom_push_and_sort(t_list  **stack_a, t_list  **stack_b);
-bool	is_min_or_max(t_list  *stack);
-void	lsd_rad(t_list  **stack_a, t_list  **stack_b);
-void	execute_bitwise_sorting(t_list  **stack_a, t_list  **stack_b, int bit);
+void sort_three(t_list **stack_a);
+void sort_five(t_list **stack_a, t_list **stack_b);
+void small_stack_sort(t_list **stack_a, t_list **stack_b);
+void	lsd_rad(t_list  **stack_a, t_list  **stack_b);;
+void execute_bitwise_sorting(t_list **stack_a, t_list **stack_b, int bit, int size);
 int	custom_max_bits(t_list  *stack);
 
 // Utils

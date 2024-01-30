@@ -18,7 +18,7 @@ t_list  *create_node(int value)
     if (new_node == NULL)
 	{
         	return NULL;
-    	}
+    }
     new_node->content = value;
     new_node->next = NULL;
     return new_node;
@@ -27,7 +27,7 @@ t_list  *create_node(int value)
 void add_to_stack(t_list  *s, t_list  *new_element)
 {
     t_list *tmp ;
-    
+
     tmp = s;
     while (tmp->next != NULL)
 	{

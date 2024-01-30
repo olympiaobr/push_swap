@@ -6,12 +6,10 @@ int main(int argc, char **argv)
     char **args;
     t_list *stack_a = NULL, *stack_b = NULL;
 
-    // Validate and store arguments
     if (!validate_args(argc, argv) || !store_args(argc, argv, &args))
         ft_error("Error\n");
-    // Initialize stack_a with input values
     stack_a = init_stack(stack_a, args);
-    ft_free_array(args); // Free args after use
+    ft_free_array(args); 
 
     // Check for duplicates
     if (!check_int_dup(args, argc - 1))

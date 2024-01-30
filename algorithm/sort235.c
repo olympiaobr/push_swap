@@ -12,65 +12,60 @@
 
 #include "../push_swap.h"
 
-void combined_sort_small(t_list  **stack_a, t_list  **stack_b)
+void sort_three(t_list **stack_a)
 {
-    int size;
+    if (list_order(*stack_a)) // Check if already sorted
+        return;
 
-    size = list_len(*stack_a);
-    if (size == 2 && !list_order(*stack_a))
+    int first = (*stack_a)->content;
+    int second = (*stack_a)->next->content;
+    int third = (*stack_a)->next->next->content;
+
+    if (first > second && first < third) // Case 1
         sa(stack_a);
-    else if (size == 3)
-        detailed_sort_three(stack_a, stack_b);
-}
-
-void detailed_sort_three(t_list **stack_a, t_list **stack_b)
-{
-    // Temporarily move the smallest or largest element to stack_b
-    if ((*stack_a)->content > (*stack_a)->next->content && 
-        (*stack_a)->content > (*stack_a)->next->next->content) {
-        pb(stack_a, stack_b); // Push the largest element to stack_b
-    } else if ((*stack_a)->content < (*stack_a)->next->content && 
-               (*stack_a)->content < (*stack_a)->next->next->content) {
-        pb(stack_a, stack_b); // Push the smallest element to stack_b
-        sa(stack_a);          // Swap the remaining two elements in stack_a if needed
-    }
-
-    // Sort the remaining two elements in stack_a
-    if ((*stack_a)->content > (*stack_a)->next->content) {
+    else if (first > third && second > third) // Case 2
+        rra(stack_a);
+    else if (first > second && second > first) // Case 3
+    {
         sa(stack_a);
-    }
-
-    // Push back the element from stack_b to stack_a if stack_b is not empty
-    if (list_len(*stack_b) > 0) {
-        pa(stack_b, stack_a);
-    }
-
-    // Additional check if the pushed back element needs to be rotated to the correct position
-    if ((*stack_a)->content > (*stack_a)->next->content) {
         ra(stack_a);
     }
+    else if (first < second && first > third) // Case 4
+        ra(stack_a);
+    // Other cases mean the stack is already sorted
 }
 
-void custom_push_and_sort(t_list  **stack_a, t_list  **stack_b)
+void sort_five(t_list **stack_a, t_list **stack_b)
 {
+    if (list_order(*stack_a)) // Check if already sorted
+        return;
+
     while (list_len(*stack_a) > 3)
     {
-        if (is_min_or_max(*stack_a))
-            pb(stack_a, stack_b);
+        if ((*stack_a)->content == min_val(*stack_a) ||
+            (*stack_a)->content == max_val(*stack_a))
+            pb(stack_a, stack_b); // Push min or max to stack_b
         else
-            ra(stack_a);
+            ra(stack_a); // Rotate stack_a
     }
-    combined_sort_small(stack_a, stack_b);
+
+    sort_three(stack_a); // Sort the three elements in stack_a
+
     while (list_len(*stack_b) > 0)
-        pa(stack_b, stack_a);
+    {
+        pa(stack_b, stack_a); // Push back to stack_a
+        if (!list_order(*stack_a))
+            ra(stack_a); // Rotate stack_a if not sorted
+    }
 }
 
-bool is_min_or_max(t_list  *stack)
+void small_stack_sort(t_list **stack_a, t_list **stack_b)
 {
-    int min;
-    int max;
-
-    min = min_val(stack);
-    max = max_val(stack);
-    return (stack->content == min || stack->content == max);
+    int size = list_len(*stack_a);
+    if (size == 2 && (*stack_a)->content > (*stack_a)->next->content)
+        sa(stack_a); // Just swap for two elements
+    else if (size == 3)
+        sort_three(stack_a);
+    else if (size == 4 || size == 5)
+        sort_five(stack_a, stack_b);
 }
