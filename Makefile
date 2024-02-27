@@ -20,9 +20,10 @@ SRCS	= ./check_args.c \
 	  ./indexing.c \
 	  ./list_utils1.c \
 	  ./list_utils2.c \
+	  ./utils.c \
 	  ./push_swap.c \
 	  ./algorithm/radix.c \
-	  ./algorithm/sort235.c \
+	  ./algorithm/sort345.c \
 	  ./instructions/instr.c \
 	  ./instructions/instr_p.c \
 	  ./instructions/instr_r.c \
@@ -33,7 +34,7 @@ OBJS = $(SRCS:.c=.o)
 
 CC	= cc
 
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -g
 
 RM	= rm -f
 

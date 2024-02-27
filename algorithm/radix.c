@@ -6,68 +6,71 @@
 /*   By: olobresh <olobresh@student.42berlin.d      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 18:53:29 by olobresh          #+#    #+#             */
-/*   Updated: 2024/01/25 18:53:30 by olobresh         ###   ########.fr       */
+/*   Updated: 2024/02/22 15:04:57 by olobresh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../push_swap.h"
 
-int custom_max_bits(t_list *stack)
+int	max_index_find(t_list *lst)
 {
-    int max_index;
-    int bits;
+	int		max_idx;
+	t_list	*current;
 
-    max_index = 0;
-    bits = 0;
-    if (!stack)
-        return 0;
-    while (stack)
-    {
-        if (stack->index > max_index)
-            max_index = stack->index;
-        stack = stack->next;
-    }
-    while (max_index)
-    {
-        max_index >>= 1;
-        bits++;
-    }
-    return bits;
+	if (lst == NULL)
+		return (-1);
+	max_idx = lst->index;
+	current = lst;
+	while (current != NULL)
+	{
+		if (current->index > max_idx)
+		{
+			max_idx = current->index;
+		}
+		current = current->next;
+	}
+	return (max_idx);
 }
 
-void execute_bitwise_sorting(t_list **stack_a, t_list **stack_b, int bit, int size)
+int	max_bits_calc(t_list *lst)
 {
-    int i;
+	int	max_idx;
+	int	bits;
 
-    i = 0;
-    while (i < size)
-    {
-        if (((*stack_a)->index >> bit) & 1)
-            ra(stack_a);
-        else
-            pb(stack_a, stack_b);
-        i++;
-    }
-    i = 0;
-    while (list_len(*stack_b) > 0)
-    {
-        pa(stack_b, stack_a);
-        i++;
-    }
+	bits = 0;
+	max_idx = max_index_find(lst);
+	while (max_idx > 0)
+	{
+		bits = bits + 1;
+		max_idx = max_idx >> 1;
+	}
+	return (bits);
 }
 
-void lsd_rad(t_list **stack_a, t_list **stack_b)
+void	lsd_raaadix(t_list **stack_a, t_list **stack_b)
 {
-    int size;
-    int max_bits;
-    int bit;
+	int		bit_level;
+	int		processed_elements;
+	int		list_size;
+	int		max_bits;
+	t_list	*current_node;
 
-    size = list_len(*stack_a);
-    max_bits = custom_max_bits(*stack_a);
-    bit = 0;
-    while (bit < max_bits)
-    {
-        execute_bitwise_sorting(stack_a, stack_b, bit, size);
-        bit++;
-    }
+	bit_level = 0;
+	list_size = list_len(*stack_a); 
+	max_bits = max_bits_calc(*stack_a);
+	while (++bit_level <= max_bits)
+	{
+		processed_elements = 0;
+		while (processed_elements < list_size)
+		{
+			current_node = *stack_a;
+			if (((current_node->index >> (bit_level - 1)) & 1) == 1)
+				ra(stack_a);
+			else
+				pb(stack_a, stack_b);
+			processed_elements++;
+		}
+		while (list_len(*stack_b) > 0)
+			pa(stack_a, stack_b);
+	}
 }

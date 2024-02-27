@@ -11,108 +11,111 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <limits.h>
 
-int validate_args(int argc, char **argv)
+int	init_args_from_argv(int argc, char **argv, char ***args)
 {
-    char **args;
-    int valid = 1;
+	int	i;
 
-    if (!store_args(argc, argv, &args))
-        ft_error("Memory error");
-    int count = 0;
-    while (args[count]) count++;
-
-    if (!check_int_dup(args, count))
-        ft_error("Invalid input");
-
-    free_arr(args);
-    return (valid);
-}
-
-// Helper function to split and store arguments
-int store_args(int argc, char **argv, char ***args)
-{
-    int i;
-
-    i = 0;
-    if (argc == 2)
-        {
-            *args = ft_split(argv[1], ' ');
-        }
-    else
-        {
-            *args = malloc(sizeof(char *) * argc);
-            if (!(*args)) 
-            	return (0);
-            while (++i < argc)
-                (*args)[i - 1] = ft_strdup(argv[i]);
-            (*args)[i - 1] = NULL;
-        }
-        return (*args != NULL);
-}
-
-void free_arr(char **array)
-{
-    int i;
-
-    i = 0;
-    if (array)
-    {
-        while (array[i])
-        {
-            free(array[i]);
-            i++;
-        }
-        free(array);
-    }
-}
-
-// Combined function to check if string is a valid integer and for duplicates
-int check_int_dup(char **args, int count)
-{
-    long long num;
-    int *nums;
-    int i;
-    int j;
-
-    nums = malloc(sizeof(int) * count);
-    if (!nums)
-        return (0);
-
-    i = 0;
-    while (i < count)
-    {
-        num = ft_atoi(args[i]);
-        if (num < INT_MIN || num > INT_MAX)
-        {
-            free(nums);
-            return (0);
-        }
-        nums[i] = (int)num;
-        j = 0;
-        while (j < i)
-        {
-            if (nums[j] == nums[i])
-            {
-                free(nums);
-                return (0);
-            }
-            j++;
-        }
-        i++;
-    }
-    free(nums);
-    return (1);
-}
-/*bool	args_are_integers(char **args_list)
-{
-	while (*args_list)
+	i = 1;
+	while (i < argc)
 	{
-		if (ft_atol(*args_list) > INT_MAX || ft_atol(*args_list) < INT_MIN)
-			return (false);
-		args_list++;
+		(*args)[i - 1] = strdup(argv[i]);
+		if (!(*args)[i - 1])
+		{
+			free_arr(*args);
+			return (0);
+		}
+		i++;
 	}
-	return (true);
+	(*args)[i - 1] = NULL;
+	return (1);
 }
-*/
+
+int	store_args(int argc, char **argv, char ***args)
+{
+	if (argc == 2)
+	{
+		*args = ft_split(argv[1], ' ');
+		if (!(*args) || !(**args))
+			return (0);
+	}
+	else
+	{
+		*args = (char **)malloc(sizeof(char *) * argc);
+		if (!(*args))
+			return (0);
+		if (!init_args_from_argv(argc, argv, args))
+			return (0);
+	}
+	return (1);
+}
+
+int	check_int(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+	{
+		i++;
+		if (str[i] == '\0')
+			return (0);
+	}
+	while (str[i] != '\0')
+	{
+		if (ft_isdigit(str[i]) == 0)
+			return (0);
+		i++;
+	}
+	if (atoi_range(str) == 0)
+		return (0);
+	return (1);
+}
+
+int	atoi_range(char *num)
+{
+	long long	result;
+	int			mult;
+
+	result = 0;
+	mult = 1;
+	while (*num == ' ' || (*num >= 9 && *num <= 13))
+		num++;
+	if (*num == '-' || *num == '+')
+	{
+		if (*num == '-')
+			mult = -1;
+		num++;
+	}
+	while (*num >= '0' && *num <= '9')
+	{
+		result = result * 10 + (*num - '0') * mult;
+		if (result < INT_MIN || result > INT_MAX)
+			return (0);
+		num++;
+	}
+	return (1);
+}
+
+int	check_args(int argc, char **argv, char ***args)
+{
+	int	i;
+
+	if (argc < 2)
+		ft_error(NULL);
+	if (argv[1][0] == '\0')
+		ft_error("Error\n");
+	if (!store_args(argc, argv, args))
+		ft_error("Error\n");
+	i = 0;
+	while ((*args)[i])
+	{
+		if (!check_int((*args)[i]))
+		{
+			free_arr(*args);
+			ft_error("Error\n");
+		}
+		i++;
+	}
+	return (1);
+}

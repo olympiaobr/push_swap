@@ -12,43 +12,75 @@
 
 #include "push_swap.h"
 
-t_list  *create_node(int value)
+t_list	*create_node(int value)
 {
-    t_list  *new_node = malloc(sizeof(t_list ));
-    if (new_node == NULL)
+	t_list	*new_node;
+
+	new_node = malloc(sizeof(t_list));
+	if (new_node == NULL)
 	{
-        	return NULL;
-    }
-    new_node->content = value;
-    new_node->next = NULL;
-    return new_node;
+		return (NULL);
+	}
+	new_node->content = value;
+	new_node->index = -1;
+	new_node->next = NULL;
+	return (new_node);
 }
 
-void add_to_stack(t_list  *s, t_list  *new_element)
+void	add_to_stack(t_list **s, t_list *new_element)
 {
-    t_list *tmp ;
+	t_list	*tmp;
 
-    tmp = s;
-    while (tmp->next != NULL)
+	if (*s == NULL)
 	{
-        	tmp = tmp->next;
-   	}
-    tmp->next = new_element;
+		*s = new_element; 
+	}
+	else
+	{
+		tmp = *s;
+		while (tmp->next != NULL)
+		{
+			tmp = tmp->next;
+		}
+		tmp->next = new_element; 
+	}
 }
 
-void clear_stack(t_list  **s)
+int	find_double(t_list *s)
 {
-   	 t_list *curr;
-    	 t_list *next_el;
+	t_list	*current;
+	t_list	*to_compare;
 
-	 curr = *s;
-   	 while (curr != NULL)
+	current = s;
+	while (current != NULL && current->next != NULL)
 	{
-        	next_el = curr->next;
-        	free(curr);
-        	curr = next_el;
-   	 }
-    *s = NULL;
+		to_compare = current->next;
+		while (to_compare != NULL)
+		{
+			if (to_compare->content == current->content)
+			{
+				return (0);
+			}
+			to_compare = to_compare->next;
+		}
+		current = current->next;
+	}
+	return (1); 
+}
+
+void	clear_stack(t_list **s)
+{
+	t_list	*curr;
+	t_list	*next_el;
+
+	curr = *s;
+	while (curr != NULL)
+	{
+		next_el = curr->next;
+		free(curr);
+		curr = next_el;
+	}
+	*s = NULL;
 }
 
 int	ft_lstsize(t_list *lst)
@@ -62,10 +94,4 @@ int	ft_lstsize(t_list *lst)
 		c++;
 	}
 	return (c);
-}
-
-void	ft_error(char *err)
-{
-	ft_putstr_fd(err, 2);
-	exit(0);
 }

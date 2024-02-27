@@ -12,28 +12,34 @@
 
 #include "push_swap.h"
 
-t_list *find_next_smallest(t_list  **stack)
+t_list	*find_next_smallest(t_list **stack)
 {
-    t_list  *temp = *stack;
-    t_list  *smallest = NULL;
+	t_list	*temp;
+	t_list	*smallest;
 
-    while (temp)
-    {
-        if (temp->index == -1 && (!smallest || temp->content < smallest->content))
-            smallest = temp;
-        temp = temp->next;
-    }
-    return smallest;
+	temp = *stack;
+	smallest = NULL;
+	while (temp)
+	{
+		if (temp->index == -1 && (!smallest 
+				|| temp->content < smallest->content))
+			smallest = temp;
+		temp = temp->next;
+	}
+	return (smallest);
 }
 
-void assign_indexes(t_list  **stack)
+void	assign_indexes(t_list **stack)
 {
-    int idx = 0;
-    t_list  *current;
+	int		idx;
+	t_list	*current;
 
-    while ((current = find_next_smallest(stack)) != NULL)
-    {
-        current->index = idx;
-        idx++;
-    }
+	idx = 0;
+	current = find_next_smallest(stack);
+	while (current != NULL)
+	{
+		current->index = idx;
+		idx++;
+		current = find_next_smallest(stack);
+	}
 }
